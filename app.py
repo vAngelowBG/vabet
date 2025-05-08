@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template
 import requests
 import os
 from datetime import datetime
@@ -27,20 +27,36 @@ def get_today_matches():
         fixture = item["fixture"]
         teams = item["teams"]
         league = item["league"]
+
+        # Mock данни за примерна логика
+        home_name = teams["home"]["name"]
+        away_name = teams["away"]["name"]
+
+        # Примерна логика за прогноза
+        if "U19" in league["name"] or "Women" in league["name"]:
+            prediction = "Over 2.5"
+            reason = "Мач с юношески или дамски отбори – обикновено резултатни."
+        elif "Premier" in league["name"] or "Serie A" in league["name"]:
+            prediction = "BTTS"
+            reason = "Сериозни отбори с добра атака – вероятно и двата ще отбележат."
+        else:
+            prediction = "1X"
+            reason = "Домакинът има леко предимство или по-силна форма."
+
         matches.append({
             "time": fixture["date"][11:16],
-            "match": f"{teams['home']['name']} – {teams['away']['name']}",
+            "match": f"{home_name} – {away_name}",
             "league": league["name"],
-            "country": league["country"]
+            "country": league["country"],
+            "prediction": prediction,
+            "reason": reason
         })
     return matches
-
 
 @app.route("/")
 def home():
     matches = get_today_matches()
-    return render_template("today.html", matches=matches)
-
+    return render_template("tips.html", matches=matches)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
