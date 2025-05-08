@@ -167,3 +167,5 @@ def r_explain():
     from datetime import datetime
     today = datetime.today().strftime('%Y-%m-%d')
     return render_template("explain.html", today=today)
+
+# force redeploy
