@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background: #222;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+}
+nav {
+    background: #444;
+    padding: 10px;
+    text-align: center;
+}
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+}
+nav a:hover {
+    color: yellow;
+}
+main {
+    padding: 20px;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: white;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>VABET – Прогнози за днес</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>VABET – AI прогнози</header>
+    <nav>
+        <a href="/today">📅 Днес</a>
+    </nav>
+    <main>
+        <h2>Прогнози за днес</h2>
+        <table>
+            <tr><th>Мач</th><th>Прогноза</th><th>Шанс</th><th>Основание</th></tr>
+            {% for m in matches %}
+            <tr>
+                <td>{{ m.match }}</td>
+                <td>{{ m.prediction }}</td>
+                <td>{{ m.confidence }}%</td>
+                <td>{{ m.reason }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+</body>
+</html>
