@@ -64,3 +64,76 @@ def today():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+
+@app.route("/history")
+def history():
+    import urllib.parse
+    from datetime import timedelta
+    from flask import request
+    date = request.args.get("date", datetime.today().strftime('%Y-%m-%d'))
+    today = datetime.today().strftime('%Y-%m-%d')
+    path = f"storage/tips_{date}.json"
+    if not os.path.exists(path):
+        return render_template("history.html", matches=[], date=date, total=0, correct=0, percent=0, today=today)
+
+    with open(path, encoding="utf-8") as f:
+        tips = json.load(f)
+
+    # взимаме реални резултати
+    url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
+    params = {"date": date, "timezone": "Europe/Sofia"}
+    response = requests.get(url, headers=HEADERS, params=params)
+    if response.status_code != 200:
+        return render_template("history.html", matches=[], date=date, total=0, correct=0, percent=0, today=today)
+
+    data = response.json().get("response", [])
+    results_map = {}
+    for item in data:
+        home = item["teams"]["home"]["name"]
+        away = item["teams"]["away"]["name"]
+        score = item["score"]["fulltime"]
+        results_map[f"{home} – {away}"] = score
+
+    matches = []
+    correct = 0
+
+    for tip in tips:
+        match = tip["match"]
+        prediction = tip["prediction"]
+        result_score = results_map.get(match)
+        if result_score:
+            result = f"{result_score['home']}:{result_score['away']}"
+            goals = (result_score['home'] or 0) + (result_score['away'] or 0)
+            status = "❌"
+
+            if prediction == "Over 2.5" and goals > 2.5:
+                status = "✅"
+            elif prediction == "BTTS" and (result_score['home'] > 0 and result_score['away'] > 0):
+                status = "✅"
+            elif prediction == "1" and result_score['home'] > result_score['away']:
+                status = "✅"
+            elif prediction == "2" and result_score['away'] > result_score['home']:
+                status = "✅"
+            elif prediction == "X" and result_score['home'] == result_score['away']:
+                status = "✅"
+
+            if status == "✅":
+                correct += 1
+        else:
+            result = "няма резултат"
+            status = "?"
+
+        matches.append({
+            "match": match,
+            "prediction": prediction,
+            "result": result,
+            "status": status,
+            "confidence": tip.get("confidence", "-"),
+            "reasoning": tip.get("reasoning", "-")
+        })
+
+    total = len(matches)
+    percent = round((correct / total) * 100) if total else 0
+
+    return render_template("history.html", matches=matches, date=date, correct=correct, total=total, percent=percent, today=today)
