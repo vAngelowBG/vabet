@@ -1,23 +1,9 @@
-
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-    <meta charset="UTF-8">
-    <title>Прогнози за днес</title>
-</head>
-<body>
-    <h1>🎯 Прогнози за днес</h1>
-    <table border="1">
-        <tr><th>Час</th><th>Мач</th><th>Прогноза</th><th>Увереност</th><th>Тип</th></tr>
-        {% for p in predictions %}
-        <tr>
-            <td>{{ p.time }}</td>
-            <td>{{ p.match }}</td>
-            <td>{{ p.prediction }}</td>
-            <td>{{ p.confidence }}</td>
-            <td>{{ p.type }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+<div>
+  <a href="/">Начало</a> |
+  <a href="/today">Днес</a> |
+  <a href="/yesterday">Вчера</a> |
+  <a href="/history">История</a> |
+  <a href="/tips">Прогнози</a> |
+  <a href="/explain">Обяснения</a>
+</div><hr>
+<h1>Index Page</h1>
