@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Прогнози за днес</title>
+</head>
+<body>
+    <h1>📊 AI Прогнози за днес</h1>
+    <table border="1">
+        <tr>
+            <th>Час</th><th>Мач</th><th>Лига</th><th>Прогноза</th><th>Обосновка</th>
+        </tr>
+        {% for m in matches %}
+        <tr>
+            <td>{{ m.time }}</td>
+            <td>{{ m.match }}</td>
+            <td>{{ m.league }} ({{ m.country }})</td>
+            <td><b>{{ m.prediction }}</b></td>
+            <td>{{ m.reason }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
