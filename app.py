@@ -62,7 +62,7 @@ def today():
     with open(f"storage/tips_{today}.json", "w", encoding="utf-8") as f:
         json.dump(tips, f, ensure_ascii=False)
 
-    return render_template("today.html", tips=tips)
+    return render_template("today.html", tips=tips, active='today')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
@@ -78,7 +78,7 @@ def history():
     today = datetime.today().strftime('%Y-%m-%d')
     path = f"storage/tips_{date}.json"
     if not os.path.exists(path):
-        return render_template("history.html", matches=[], date=date, total=0, correct=0, percent=0, today=today)
+        return render_template("history.html", matches=[], date=date, total=0, correct=0, percent=0, today=today, active='history')
 
     with open(path, encoding="utf-8") as f:
         tips = json.load(f)
@@ -88,7 +88,7 @@ def history():
     params = {"date": date, "timezone": "Europe/Sofia"}
     response = requests.get(url, headers=HEADERS, params=params)
     if response.status_code != 200:
-        return render_template("history.html", matches=[], date=date, total=0, correct=0, percent=0, today=today)
+        return render_template("history.html", matches=[], date=date, total=0, correct=0, percent=0, today=today, active='history')
 
     data = response.json().get("response", [])
     results_map = {}
@@ -139,33 +139,33 @@ def history():
     total = len(matches)
     percent = round((correct / total) * 100) if total else 0
 
-    return render_template("history.html", matches=matches, date=date, correct=correct, total=total, percent=percent, today=today)
+    return render_template("history.html", matches=matches, date=date, correct=correct, total=total, percent=percent, today=today, active='history')
 
 @app.route("/today")
 def r_today():
     from datetime import datetime
     today = datetime.today().strftime('%Y-%m-%d')
-    return render_template("today.html", today=today)
+    return render_template("today.html", today=today, active='today')
 
 
 @app.route("/yesterday")
 def r_yesterday():
     from datetime import datetime
     today = datetime.today().strftime('%Y-%m-%d')
-    return render_template("yesterday.html", today=today)
+    return render_template("yesterday.html", today=today, active='yesterday')
 
 
 @app.route("/tips")
 def r_tips():
     from datetime import datetime
     today = datetime.today().strftime('%Y-%m-%d')
-    return render_template("tips.html", today=today)
+    return render_template("tips.html", today=today, active='tips')
 
 
 @app.route("/explain")
 def r_explain():
     from datetime import datetime
     today = datetime.today().strftime('%Y-%m-%d')
-    return render_template("explain.html", today=today)
+    return render_template("explain.html", today=today, active='explain')
 
 # force redeploy
