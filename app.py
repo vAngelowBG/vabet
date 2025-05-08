@@ -2,6 +2,9 @@
 from flask import Flask, render_template
 import requests
 import os
+os.makedirs("storage", exist_ok=True)
+
+import os
 import json
 from datetime import datetime
 
