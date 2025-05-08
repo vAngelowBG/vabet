@@ -1,40 +1,46 @@
 
 from flask import Flask, render_template, jsonify
-import datetime
+import requests
+import os
+from datetime import datetime
 
 app = Flask(__name__)
 
-# Фалшиви прогнози за демонстрация
-sample_predictions = [
-    {"match": "Ливърпул – Арсенал", "time": "21:00", "prediction": "Над 2.5", "confidence": "78%", "type": "AI"},
-    {"match": "Ювентус – Интер", "time": "19:00", "prediction": "1", "confidence": "65%", "type": "AI"}
-]
+API_KEY = os.environ.get("X_RAPIDAPI_KEY")
+HEADERS = {
+    "X-RapidAPI-Key": API_KEY,
+    "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
+}
 
-# Фалшива статистика за вчера
-sample_stats = {"total": 10, "correct": 7, "accuracy": "70%"}
+def get_today_matches():
+    url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
+    today = datetime.today().strftime('%Y-%m-%d')
+    params = {"date": today, "timezone": "Europe/Sofia"}
+    response = requests.get(url, headers=HEADERS, params=params)
+
+    if response.status_code != 200:
+        return []
+
+    data = response.json().get("response", [])
+    matches = []
+    for item in data:
+        fixture = item["fixture"]
+        teams = item["teams"]
+        league = item["league"]
+        matches.append({
+            "time": fixture["date"][11:16],
+            "match": f"{teams['home']['name']} – {teams['away']['name']}",
+            "league": league["name"],
+            "country": league["country"]
+        })
+    return matches
 
 
 @app.route("/")
 def home():
-    return render_template("index.html", predictions=sample_predictions)
+    matches = get_today_matches()
+    return render_template("today.html", matches=matches)
 
-
-@app.route("/yesterday")
-def yesterday():
-    return render_template("yesterday.html", stats=sample_stats)
-
-
-@app.route("/api/today")
-def api_today():
-    return jsonify(sample_predictions)
-
-
-@app.route("/api/yesterday")
-def api_yesterday():
-    return jsonify(sample_stats)
-
-
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
