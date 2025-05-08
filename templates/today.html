@@ -1,18 +1,31 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="bg">
 <head>
-    <title>today.html</title>
+    <meta charset="UTF-8">
+    <title>AI Прогнози за днес</title>
 </head>
 <body>
-    <div>
-        <a href="/">Начало</a> |
-        <a href="/today">Днес</a> |
-        <a href="/yesterday">Вчера</a> |
-        <a href="/history">История</a> |
-        <a href="/tips">Прогнози</a> |
-        <a href="/explain">Обяснения</a>
-    </div>
-    <h1>today съдържание</h1>
+    <h1>📊 AI Прогнози за днес</h1>
+    <table border="1">
+        <tr>
+            <th>Час</th>
+            <th>Мач</th>
+            <th>Лига</th>
+            <th>Прогноза</th>
+            <th>Шанс (%)</th>
+            <th>Базирано на</th>
+        </tr>
+        {% for t in tips %}
+        <tr>
+            <td>{{ t.time }}</td>
+            <td>{{ t.match }}</td>
+            <td>{{ t.league }} ({{ t.country }})</td>
+            <td><b>{{ t.prediction }}</b></td>
+            <td>{{ t.confidence }}%</td>
+            <td>{{ t.reasoning }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
