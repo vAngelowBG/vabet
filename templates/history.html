@@ -6,43 +6,5 @@
     <title>История на прогнозите</title>
 </head>
 <body>
+{% include 'menu.html' %}
 
-<!-- меню версия 4 -->
-<nav style="margin-bottom: 20px;">
-    <a href="/" {% if active == 'index' %}style="font-weight:bold;"{% endif %}>🏠 Начало</a> |
-    <a href="/today" {% if active == 'today' %}style="font-weight:bold;"{% endif %}>📅 Днес</a> |
-    <a href="/yesterday" {% if active == 'yesterday' %}style="font-weight:bold;"{% endif %}>📈 Вчера</a> |
-    <a href="/history?date={{ today }}" {% if active == 'history' %}style="font-weight:bold;"{% endif %}>🕓 История</a> |
-    <a href="/tips" {% if active == 'tips' %}style="font-weight:bold;"{% endif %}>📊 Прогнози</a> |
-    <a href="/explain" {% if active == 'explain' %}style="font-weight:bold;"{% endif %}>ℹ️ Обяснения</a>
-</nav>
-
-    <h1>📅 История за дата: {{ date }}</h1>
-    <nav style="margin-bottom: 20px;">
-        <a href="/">🏠 Начало</a> |
-        <a href="/history?date={{ today }}">📅 Днешни прогнози</a>
-    </nav>
-
-    {% if total > 0 %}
-        <p><b>Познати прогнози:</b> {{ correct }} от {{ total }} ({{ percent }}%)</p>
-    {% else %}
-        <p>Няма прогнози за избраната дата.</p>
-    {% endif %}
-
-    <table border="1">
-        <tr>
-            <th>Мач</th><th>Прогноза</th><th>Резултат</th><th>Статус</th><th>Увереност</th><th>Обосновка</th>
-        </tr>
-        {% for m in matches %}
-        <tr>
-            <td>{{ m.match }}</td>
-            <td>{{ m.prediction }}</td>
-            <td>{{ m.result }}</td>
-            <td>{{ m.status }}</td>
-            <td>{{ m.confidence }}%</td>
-            <td>{{ m.reasoning }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>

@@ -6,44 +6,5 @@
     <title>AI Прогнози за днес</title>
 </head>
 <body>
+{% include 'menu.html' %}
 
-<!-- меню версия 4 -->
-<nav style="margin-bottom: 20px;">
-    <a href="/" {% if active == 'index' %}style="font-weight:bold;"{% endif %}>🏠 Начало</a> |
-    <a href="/today" {% if active == 'today' %}style="font-weight:bold;"{% endif %}>📅 Днес</a> |
-    <a href="/yesterday" {% if active == 'yesterday' %}style="font-weight:bold;"{% endif %}>📈 Вчера</a> |
-    <a href="/history?date={{ today }}" {% if active == 'history' %}style="font-weight:bold;"{% endif %}>🕓 История</a> |
-    <a href="/tips" {% if active == 'tips' %}style="font-weight:bold;"{% endif %}>📊 Прогнози</a> |
-    <a href="/explain" {% if active == 'explain' %}style="font-weight:bold;"{% endif %}>ℹ️ Обяснения</a>
-</nav>
-
-
-<nav style="margin-bottom: 20px;">
-    <a href="/">🏠 Начало</a> |
-    <a href="/history?date={{ today }}">📅 История (днес)</a> |
-    <a href="/history?date=2024-05-01">📆 Пример дата</a>
-</nav>
-
-    <h1>📊 AI Прогнози за днес</h1>
-    <table border="1">
-        <tr>
-            <th>Час</th>
-            <th>Мач</th>
-            <th>Лига</th>
-            <th>Прогноза</th>
-            <th>Шанс (%)</th>
-            <th>Базирано на</th>
-        </tr>
-        {% for t in tips %}
-        <tr>
-            <td>{{ t.time }}</td>
-            <td>{{ t.match }}</td>
-            <td>{{ t.league }} ({{ t.country }})</td>
-            <td><b>{{ t.prediction }}</b></td>
-            <td>{{ t.confidence }}%</td>
-            <td>{{ t.reasoning }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>

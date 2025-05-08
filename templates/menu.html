@@ -1,0 +1,9 @@
+<!-- меню версия 5 -->
+<nav style="margin-bottom: 20px;">
+    <a href="/" {% if active == 'index' %}style="font-weight:bold;"{% endif %}>🏠 Начало</a> |
+    <a href="/today" {% if active == 'today' %}style="font-weight:bold;"{% endif %}>📅 Днес</a> |
+    <a href="/yesterday" {% if active == 'yesterday' %}style="font-weight:bold;"{% endif %}>📈 Вчера</a> |
+    <a href="/history" {% if active == 'history' %}style="font-weight:bold;"{% endif %}>🕓 История</a> |
+    <a href="/tips" {% if active == 'tips' %}style="font-weight:bold;"{% endif %}>📊 Прогнози</a> |
+    <a href="/explain" {% if active == 'explain' %}style="font-weight:bold;"{% endif %}>ℹ️ Обяснения</a>
+</nav>
