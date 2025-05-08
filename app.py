@@ -140,3 +140,30 @@ def history():
     percent = round((correct / total) * 100) if total else 0
 
     return render_template("history.html", matches=matches, date=date, correct=correct, total=total, percent=percent, today=today)
+
+@app.route("/today")
+def r_today():
+    from datetime import datetime
+    today = datetime.today().strftime('%Y-%m-%d')
+    return render_template("today.html", today=today)
+
+
+@app.route("/yesterday")
+def r_yesterday():
+    from datetime import datetime
+    today = datetime.today().strftime('%Y-%m-%d')
+    return render_template("yesterday.html", today=today)
+
+
+@app.route("/tips")
+def r_tips():
+    from datetime import datetime
+    today = datetime.today().strftime('%Y-%m-%d')
+    return render_template("tips.html", today=today)
+
+
+@app.route("/explain")
+def r_explain():
+    from datetime import datetime
+    today = datetime.today().strftime('%Y-%m-%d')
+    return render_template("explain.html", today=today)
