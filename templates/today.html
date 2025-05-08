@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Мачове за днес</title>
+</head>
+<body>
+    <h1>⚽ Мачове за днес</h1>
+    <table border="1">
+        <tr><th>Час</th><th>Мач</th><th>Лига</th><th>Държава</th></tr>
+        {% for m in matches %}
+        <tr>
+            <td>{{ m.time }}</td>
+            <td>{{ m.match }}</td>
+            <td>{{ m.league }}</td>
+            <td>{{ m.country }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
