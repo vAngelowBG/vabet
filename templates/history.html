@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>История на прогнозите</title>
+</head>
+<body>
+    <h1>📅 История за дата: {{ date }}</h1>
+    <nav style="margin-bottom: 20px;">
+        <a href="/">🏠 Начало</a> |
+        <a href="/history?date={{ today }}">📅 Днешни прогнози</a>
+    </nav>
+
+    {% if total > 0 %}
+        <p><b>Познати прогнози:</b> {{ correct }} от {{ total }} ({{ percent }}%)</p>
+    {% else %}
+        <p>Няма прогнози за избраната дата.</p>
+    {% endif %}
+
+    <table border="1">
+        <tr>
+            <th>Мач</th><th>Прогноза</th><th>Резултат</th><th>Статус</th><th>Увереност</th><th>Обосновка</th>
+        </tr>
+        {% for m in matches %}
+        <tr>
+            <td>{{ m.match }}</td>
+            <td>{{ m.prediction }}</td>
+            <td>{{ m.result }}</td>
+            <td>{{ m.status }}</td>
+            <td>{{ m.confidence }}%</td>
+            <td>{{ m.reasoning }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
