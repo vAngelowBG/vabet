@@ -58,6 +58,52 @@ def home():
     matches = get_today_matches()
     return render_template("tips.html", matches=matches)
 
+
+@app.route("/explain")
+def explain():
+    return render_template("explain.html")
+
+@app.route("/yesterday")
+def yesterday():
+    from datetime import timedelta
+    yesterday = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
+    url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
+    params = {"date": yesterday, "timezone": "Europe/Sofia"}
+    response = requests.get(url, headers=HEADERS, params=params)
+    if response.status_code != 200:
+        return render_template("yesterday.html", matches=[], total=0, correct=0, percent=0)
+
+    data = response.json().get("response", [])
+    matches = []
+    correct = 0
+
+    for item in data:
+        fixture = item["fixture"]
+        score = item["score"]
+        teams = item["teams"]
+        fulltime = score["fulltime"]
+        result = f"{fulltime['home']}:{fulltime['away']}"
+        home = teams["home"]["name"]
+        away = teams["away"]["name"]
+
+        # Симулирана прогноза за демонстрация
+        prediction = "Over 2.5"
+        total_goals = (fulltime['home'] or 0) + (fulltime['away'] or 0)
+        is_correct = total_goals > 2.5
+
+        matches.append({
+            "match": f"{home} – {away}",
+            "prediction": prediction,
+            "result": result,
+            "status": "✅" if is_correct else "❌"
+        })
+        if is_correct:
+            correct += 1
+
+    total = len(matches)
+    percent = round((correct / total) * 100) if total else 0
+    return render_template("yesterday.html", matches=matches, total=total, correct=correct, percent=percent)
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
